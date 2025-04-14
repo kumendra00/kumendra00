@@ -1,0 +1,109 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Private Chat - Login</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fce4ec;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    #chatBox, #loginBox {
+      display: none;
+    }
+    .box {
+      width: 90%;
+      max-width: 400px;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #ec407a;
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border: 1px solid #ec407a;
+      border-radius: 5px;
+    }
+    button {
+      background-color: #ec407a;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<div class="box" id="loginBox">
+  <h2>Login</h2>
+  <input type="password" id="password" placeholder="Enter Secret Password" />
+  <button onclick="login()">Login</button>
+</div>
+
+<div class="box" id="chatBox">
+  <h2>Private Chat</h2>
+  <div id="messages" style="height:200px; overflow-y:auto; margin-bottom:10px;"></div>
+  <input type="text" id="messageInput" placeholder="Type a message..." />
+  <button onclick="sendMessage()">Send</button>
+</div>
+
+<script>
+  const correctPassword = "love2025"; // Change this to your secret password
+  const loginBox = document.getElementById("loginBox");
+  const chatBox = document.getElementById("chatBox");
+  const messages = document.getElementById("messages");
+  const messageInput = document.getElementById("messageInput");
+
+  let chatData = [];
+
+  function login() {
+    const input = document.getElementById("password").value;
+    if (input === correctPassword) {
+      loginBox.style.display = "none";
+      chatBox.style.display = "block";
+    } else {
+      alert("Wrong password!");
+    }
+  }
+
+  function sendMessage() {
+    const msg = messageInput.value.trim();
+    if (msg) {
+      chatData.push(msg);
+      updateMessages();
+      messageInput.value = "";
+    }
+  }
+
+  function updateMessages() {
+    messages.innerHTML = "";
+    chatData.forEach(m => {
+      const p = document.createElement("p");
+      p.textContent = m;
+      messages.appendChild(p);
+    });
+  }
+
+  // Auto delete chat if tab is switched
+  window.onblur = () => {
+    chatData = [];
+    updateMessages();
+    alert("Chat cleared for privacy!");
+  };
+
+  // Show login first
+  loginBox.style.display = "block";
+</script>
+
+</body>
+</html>
